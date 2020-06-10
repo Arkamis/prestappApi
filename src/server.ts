@@ -38,5 +38,6 @@ export const start = async () => {
         })
     } catch (e) {
         console.error(e)
+        return process.exit(1);
     }
 }
