@@ -24,7 +24,12 @@ export const authenticateUser = async (req: Request, res: Response) => {
         token
       });
     } catch (e) {
-      res.status(400).send();
+      console.log(e);
+
+      res.status(400).json({
+        status: "Error",
+        error: e.toString()
+      });
     }
   }
   

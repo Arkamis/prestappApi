@@ -76,8 +76,7 @@ userSchema.statics.findByCredentials = async (email: string, password: string) =
   if (!isMatch) {
     throw new Error('Unable to login');
   }
-
-  return user.toJSON;
+  return user;
 }
 
 userSchema.methods.toJSON = function (): Object {
@@ -95,19 +94,21 @@ userSchema.methods.toJSON = function (): Object {
 }
 
 userSchema.methods.generateAuthToken = async function (): Promise < String > {
-	const user = this;
-	console.log(this);
+  const user = this;
+  const secret = config.secrets.jwt;
+  
   const token = jwt.sign({
     _id: user._id.toString()
-  }, config.secrets.jwt);
-
-	user.tokens.push(token);
-	await user.save();
-
+  }, secret);
+  
+  user.tokens.push(token);
+  await user.save();
+  
   return token;
+  
 }
-
 userSchema.virtual('fullName').get(function(this: {firstName: String, lastName: String}){
 	return this.firstName + " " + this.lastName;
 });
-export const User = mongoose.model<IUser, IUserModel>('user', userSchema)
+
+export const User: IUserModel = mongoose.model<IUser, IUserModel>('user', userSchema)
