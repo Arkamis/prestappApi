@@ -2,8 +2,8 @@ import { IEnvConfig } from '../interfaces';
 
 export const config: IEnvConfig = {
     secrets: {
-        jwt: 'stringExample'
+        jwt: process.env.JWT_SECRET as string
     },
     mongo_uri: process.env.MONGO_URI as string,
-    port : 3000
+    port : 5001
 }

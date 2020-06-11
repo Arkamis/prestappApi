@@ -4,7 +4,7 @@ import {
     Model
 } from "mongoose";
 
-export interface IUser extends Document {
+interface IUserDocument extends Document {
     _id: Types.ObjectId;
     firstName: string;
     lastName: string;
@@ -13,6 +13,8 @@ export interface IUser extends Document {
     password: string;
     tokens:[string];
     fullName: string;
+}
+export interface IUser extends IUserDocument {
     generateAuthToken():  Promise<string>;
     toJSON(): Object;
 }
