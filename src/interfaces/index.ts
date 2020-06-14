@@ -5,5 +5,7 @@ export interface IEnvConfig {
   },
   mongo_uri: string;
   port: number | string;
+  email_user: string;
+  email_password: string;
 }
 
