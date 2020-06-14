@@ -12,7 +12,10 @@ export const registerUser = async (req: Request, res: Response): Promise < void 
       });
     } catch (e) {
       console.error(e);
-      res.status(400).send(e);
+      res.status(400).json({
+        status: "Error",
+        message: "Bad params try againg"
+      })
     }
 }
 export const authenticateUser = async (req: Request, res: Response) => {
@@ -27,7 +30,8 @@ export const authenticateUser = async (req: Request, res: Response) => {
       console.log(e);
 
       res.status(400).json({
-        status: "Error",
+        status: "error",
+        message: "Correo o contrasena incorrectas, porfavor ingrese las credenciales correctas",
         error: e.toString()
       });
     }
@@ -48,6 +52,6 @@ export const logout = async (req: Request, res: Response) => {
 
 export const me = async (req: Request, res: Response) => {
     if(req.user){
-        res.status(200).send(req.user);
+      res.status(200).send(req.user);
     }
 }
