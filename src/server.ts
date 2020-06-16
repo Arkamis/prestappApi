@@ -16,6 +16,7 @@ import { connection } from './utils/db';
 
 //routes
 import  userRouter from "./services/users/user.routes";
+import {errorHandler}  from "./utils/errorHandling";
 // import { skip, stream } from './utils';
 
 const app: Application = express();
@@ -29,6 +30,7 @@ app.use(morgan('dev'));
 
 
 app.use('/api/users', userRouter);
+app.use(errorHandler);
 
 export const start = async () => {
     try {

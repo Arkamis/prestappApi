@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 import { IUser, IUserModel } from "./user.interface";
 import bcrypt from 'bcrypt';
-import config from '../../config';
-import jwt from 'jsonwebtoken';
+import { newToken } from '../../utils/auth';
+import createHttpError from 'http-errors';
+// import createHttpError from 'http-errors';
 
 const userSchema = new mongoose.Schema(
   {
@@ -30,7 +31,8 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true
-		},
+    },
+    email_verified: Boolean,
 		tokens: [String]
   },
   { timestamps: true, versionKey: false}
@@ -48,9 +50,10 @@ userSchema.pre<IUser>('save', function(next) {
 
     this.password = hash;
     next();
-  })
+  });
 });
-userSchema.methods.checkPassword = function(password: string){
+
+userSchema.methods.checkPassword = function(password: string): Promise<boolean>{
   const passwordHash = this.password;
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, passwordHash, (err, same) => {
@@ -59,22 +62,22 @@ userSchema.methods.checkPassword = function(password: string){
       }
       resolve(same)
     })
-  })
+  });
 }
 
 userSchema.statics.findByCredentials = async (email: string, password: string) => {
   const user = await User.findOne({
     email
-  })
+  });
 
   if (!user) {
-    throw new Error('Unable to login');
+    throw createHttpError(404, 'Usuario y/o contasena invalidos, ingrese Credenciales validas porfavor.');
   }
 
-  const isMatch = await bcrypt.compare(password, user.password);
+  const isMatch = await user.checkPassword(password);
 
   if (!isMatch) {
-    throw new Error('Unable to login');
+    throw createHttpError(404, 'Usuario y/o contasena invalidos, ingrese Credenciales validas porfavor.');
   }
   return user;
 }
@@ -93,13 +96,9 @@ userSchema.methods.toJSON = function (): Object {
   return userObject;
 }
 
-userSchema.methods.generateAuthToken = async function (): Promise < String > {
+userSchema.methods.generateAuthToken = async function (this: IUser): Promise < String > {
   const user = this;
-  const secret = config.secrets.jwt;
-  
-  const token = jwt.sign({
-    _id: user._id.toString()
-  }, secret);
+  const token = newToken(user);
   
   user.tokens.push(token);
   await user.save();

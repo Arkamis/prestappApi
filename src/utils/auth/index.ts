@@ -6,7 +6,7 @@ import { Response, NextFunction } from "express-serve-static-core";
 import { User } from "../../services/users/user.model";
 
 export const newToken = (user: IUser) => {
-    return jwt.sign({ id: user.id }, config.secrets.jwt, {
+    return jwt.sign({ _id: user.id }, config.secrets.jwt, {
       expiresIn: config.secrets.jwtExp
     })
 }
@@ -31,7 +31,7 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
             tokens: token 
         });
 
-        if (!user) {
+        if (!user || !user.email_verified) {
             throw new Error();
         }
         req.token = token;
