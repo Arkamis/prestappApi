@@ -2,7 +2,8 @@ import {
     logout, 
     authenticateUser, 
     registerUser, 
-    me
+    me,
+    verifyEmail
 } from './user.controller';
 import { Router } from 'express';
 import { protect } from '../../utils/auth';
@@ -13,7 +14,8 @@ const router = Router();
 router.post('/register', registerUser);
 router.post('/login', authenticateUser);
 
-router.get('logout', logout);
+router.get('/logout',protect, logout);
 router.get('/me', protect, me);
+router.get('/confirmation/:token', verifyEmail);
 
 export default router;

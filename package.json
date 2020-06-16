@@ -8,13 +8,15 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -p .",
-    "build:dev": "tsc-watch --onSuccess \"yarn run dev\" ",
+    "build:dev": "tsc-watch --onSuccess \"yarn run start\" ",
     "start": "node ./dist/index.js",
     "dev": "nodemon --exec \"yarn start\" ",
-    "restart": "rimraf dist && yarn build"
+    "restart": "rimraf dist && yarn build",
+    "debug": "tsc -p . && node --inspect ./dist/index.js"
   },
   "private": true,
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "@types/node": "^14.0.12",
     "bcrypt": "^5.0.0",
     "compression": "^1.7.4",
@@ -23,6 +25,7 @@
     "express": "^4.17.1",
     "express-jwt": "^5.3.3",
     "helmet": "^3.22.0",
+    "http-errors": "^1.7.3",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "mongoose": "^5.9.18",
@@ -38,6 +41,7 @@
     "@types/express": "^4.17.6",
     "@types/express-jwt": "^0.0.42",
     "@types/helmet": "^0.0.47",
+    "@types/http-errors": "^1.6.3",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/lodash": "^4.14.155",
     "@types/mongoose": "^5.7.23",

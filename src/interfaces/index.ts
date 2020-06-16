@@ -1,7 +1,10 @@
+import { HttpError } from "http-errors";
 
 export interface IEnvConfig {
   secrets: {
+    jwtExp?: string;
     jwt: string;
+    jwtExpEmail?: string;
   },
   mongo_uri: string;
   port: number | string;
@@ -9,3 +12,8 @@ export interface IEnvConfig {
   email_password: string;
 }
 
+export interface Errorhttp extends HttpError{
+  headers: {
+    solucion: string;
+  };
+}
