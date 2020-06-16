@@ -4,6 +4,7 @@ import { Errorhttp } from '../../interfaces';
 export const errorHandler = async (error: Errorhttp, req: Request, res: Response, next:NextFunction): Promise<void> => {
   console.error("Mi error:", error);
   if(!error){
+    res.status(404).send("Ruta no encontrada");
     return;
   }
   // const user = req.user;
