@@ -27,7 +27,8 @@ const paymentSchema = new Schema({
       return val.toLowerCase();
     },
     lowercase: true,
-    enum: ['pending', 'complete', 'active', 'delayed']
+    default: "active",
+    enum: ['pending', 'complete', 'active']
   },
   owner: {
     type: Schema.Types.ObjectId,
@@ -42,7 +43,7 @@ const paymentSchema = new Schema({
   debt: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: "Debt"
+    ref: "Debt",
   }
 
 });

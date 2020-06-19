@@ -44,8 +44,8 @@ app.get('/confirmation/:token', verifyEmail);
 
 app.use('/api', protect)
 app.use('/api/user', userRouter);
-app.use('/api/debt', paymentRouter);
-app.use('/api/payment', debtRouter);
+app.use('/api/debt', debtRouter);
+app.use('/api/payment', paymentRouter);
 app.get('/api/logout', logout);
 
 app.use(errorHandler);

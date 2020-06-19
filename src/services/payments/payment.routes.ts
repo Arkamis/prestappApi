@@ -10,6 +10,6 @@ router.route('/')
 router.route('/:id')
     .get(paymentController.getOne)
     .delete(paymentController.removeOne)
-    .patch(paymentController.updateOne);
+    .put(paymentController.updateOne);
 
 export default router;
