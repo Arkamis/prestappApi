@@ -16,7 +16,16 @@ import { connection } from './utils/db';
 
 //routes
 import  userRouter from "./services/users/user.routes";
+import  debtRouter from "./services/debts/debt.routes";
+import  paymentRouter from "./services/payments/payment.routes";
 import {errorHandler}  from "./utils/errorHandling";
+import { 
+    protect, 
+    authenticateUser, 
+    registerUser, 
+    logout,
+    verifyEmail
+} from "./utils/auth";
 // import { skip, stream } from './utils';
 
 const app: Application = express();
@@ -29,8 +38,18 @@ app.use(urlencoded({ extended: false }));
 app.use(morgan('dev'));
 
 
-app.use('/api/users', userRouter);
+app.post('/signup', registerUser)
+app.post('/signin', authenticateUser)
+app.get('/confirmation/:token', verifyEmail);
+
+app.use('/api', protect)
+app.use('/api/user', userRouter);
+app.use('/api/debt', debtRouter);
+app.use('/api/payment', paymentRouter);
+app.get('/api/logout', logout);
+
 app.use(errorHandler);
+//needs 404 route not found handler
 
 export const start = async () => {
     try {

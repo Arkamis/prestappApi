@@ -1,16 +1,15 @@
 
 import { merge } from 'lodash';
-import { IEnvConfig } from '../interfaces';
+import { IEnvConfig, IBaseConfig, Config } from '../interfaces';
 
 const env = process.env.NODE_ENV || 'development';
 
-const baseConfig = {
+const baseConfig: IBaseConfig = {
   env,
-  isDev: env === 'development',
-  isTest: env === 'testing',
   secrets: {
     jwtExp: '30d',
-    jwtExpEmail: '15d'
+    jwtExpEmail: '15d',
+    jwt: process.env.JWT_SECRET as string
   }
 }
 
@@ -29,5 +28,5 @@ switch (env) {
     envConfig = require('./dev').config
 
 }
-
-export default merge(baseConfig, envConfig)
+const config:Config = merge(baseConfig, envConfig);
+export default config;

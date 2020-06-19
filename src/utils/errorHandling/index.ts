@@ -11,17 +11,23 @@ export const errorHandler = async (error: Errorhttp, req: Request, res: Response
   const code = error.statusCode;
 
   switch(true){
-    case code > 400:
+    case code >= 400:
       res.status(code).json({
         status: "Error",
         error: {
           mensaje: error.message,
           nombre: error.name
         }
-      });
+      }).end();
       break;
     default:
-
+      res.status(code).json({
+        status: "Error",
+        error: {
+          mensaje: error.message,
+          nombre: error.name
+        }
+      }).end();
       break;
   }
 }
