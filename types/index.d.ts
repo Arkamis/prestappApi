@@ -1,6 +1,6 @@
 declare namespace Express {
     interface Request {
         token?: string;
-        user?: import('../src/services/users/user.interface').IUser;
+        user: import('../src/services/users/user.interface').IUser;
     }
 }

@@ -3,17 +3,38 @@ import {
     Document,
     Model
 } from "mongoose";
+import { IPayment } from "../payments/payment.interface";
+import { IDebt } from "../debts/debt.interface";
 
-interface IUserDocument extends Document {
-    _id: Types.ObjectId;
+export interface userUpdateMask {
+    firstName?: string;
+    lastName?: string;
+    phone?: string;
+    emailAsDebtor?: string;
+}
+export interface createUserMask {
     firstName: string;
     lastName: string;
     phone?: string;
-    email: string;
+    emailAsDebtor?: string;
+    email?: string;
+    rol: undefined;
+}
+interface IUserDocument extends Document {
+    owner?: Types.ObjectId;
+    firstName: string;
+    lastName: string;
+    phone: string;
+    email?: string;
+    emailAsDebtor?: string;
     password: string;
     tokens:[string];
     fullName?: string;
-    email_verified?: boolean;
+    payments?:[IPayment];
+    debts?:[IDebt];
+    isEmailVerified?: boolean;
+    clients?: [IUser];
+    rol: string;
 }
 export interface IUser extends IUserDocument {
     generateAuthToken():  Promise<string>;

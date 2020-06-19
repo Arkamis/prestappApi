@@ -1,21 +1,24 @@
-import { 
-    logout, 
-    authenticateUser, 
-    registerUser, 
+import userController, { 
     me,
-    verifyEmail
+    updateMe,
+    validateCreateRequestMiddleware
 } from './user.controller';
 import { Router } from 'express';
-import { protect } from '../../utils/auth';
 
 const router = Router();
 
 //here we declare routes, remeber REST ARQ
-router.post('/register', registerUser);
-router.post('/login', authenticateUser);
+router.route('/client')
+    .get(userController.getMany)
+    .post(userController.createOne);
 
-router.get('/logout',protect, logout);
-router.get('/me', protect, me);
-router.get('/confirmation/:token', verifyEmail);
+router.route('/client/:id')
+    .get(userController.getOne)
+    .put(userController.updateOne)
+    .delete(userController.removeOne);
+
+router.route('/')
+    .get(me)
+    .put(updateMe);
 
 export default router;

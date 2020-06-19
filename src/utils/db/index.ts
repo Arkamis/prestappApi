@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-import { config } from '../../config/dev';
-
+import config from '../../config';
 
 export const connection = (url = config.mongo_uri, opts = {}) => {
     return mongoose.connect(url, {
@@ -9,7 +8,7 @@ export const connection = (url = config.mongo_uri, opts = {}) => {
         useUnifiedTopology: true,
         useCreateIndex: true
     }).then(() => {
-        console.log(`🎉Successfully connected to Mongo Atlas 🎉`);
+        console.log(`🎉Successfully connected to Mongo, Enviroment:${config.env} 🎉`);
     });
 }
 
